@@ -2,8 +2,8 @@ package ddwu.com.mobile.photomemo.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import ddwu.com.mobile.photomemo.R
 import ddwu.com.mobile.photomemo.data.MemoDto
 import ddwu.com.mobile.photomemo.databinding.ListItemBinding
@@ -12,6 +12,7 @@ class MemoAdapter: RecyclerView.Adapter<MemoAdapter.MemoHolder>(){
 
     var memoList: List<MemoDto>? = null
     var itemClickListener: OnMemoItemClickListener? = null
+    var itemLongClickListener: OnMemoItemLongClickListener? = null
 
     override fun getItemCount(): Int {
         return memoList?.size ?: 0
@@ -32,6 +33,10 @@ class MemoAdapter: RecyclerView.Adapter<MemoAdapter.MemoHolder>(){
         holder.itemBinding.clItem.setOnClickListener {
             itemClickListener?.onItemClick(position)
         }
+        holder.itemBinding.clItem.setOnLongClickListener{
+            itemLongClickListener?.onItemLongClick(position)
+            true
+        }
     }
 
     class MemoHolder(val itemBinding: ListItemBinding) : RecyclerView.ViewHolder(itemBinding.root)
@@ -39,9 +44,17 @@ class MemoAdapter: RecyclerView.Adapter<MemoAdapter.MemoHolder>(){
     interface OnMemoItemClickListener {
         fun onItemClick(position: Int)
     }
+    interface OnMemoItemLongClickListener {
+        fun onItemLongClick(position: Int)
+    }
 
     fun setOnItemClickListener(listener: OnMemoItemClickListener) {
         itemClickListener = listener
+    }
+
+
+    fun setOnItemLongClickListener(longListener: OnMemoItemLongClickListener){
+        itemLongClickListener = longListener
     }
 
 }
